@@ -253,7 +253,7 @@ class LargeTestsRoot {
 	       
     static makeDockerArgs() {
         def out = ""
-        linkMap.each {
+        linkMap.each { key, value ->
             out += "-v ${key}:${value} "
         }
         out
