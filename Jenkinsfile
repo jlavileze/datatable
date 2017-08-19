@@ -53,11 +53,12 @@ pipeline {
                 dockerfile {
                     label "docker"
                     filename "Dockerfile"
-                    args "-v /tmp/pydatatable_large_data:/tmp/pydatatable_large_data -v /home/0xdiag"
+                    args "-v /tmp/pydatatable_large_data -v /home/0xdiag"
                 }
             }
             steps {
                 dumpInfo 'Coverage on Linux'
+                echo sh([script: "ls -RL /tmp/pydatatable_large_data", returnStdout: true])
                 sh """
                     export DT_LARGE_TESTS_ROOT="${largeTestsRootEnv}"
                     rm -rf .venv venv 2> /dev/null
