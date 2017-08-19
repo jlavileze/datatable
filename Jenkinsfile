@@ -4,7 +4,10 @@
 
 import ai.h2o.ci.Utils
 def utilsLib = new Utils()
-largeTestsRootEnv = returnIfModified("(py_)?fread\\..*", "/home/0xdiag")
+node {
+largeTestsRootEnv = returnIfModified("(py_)?fread\\..*", "large_data")
+linkFolders()
+}
 
 pipeline {
     agent none
@@ -50,6 +53,7 @@ pipeline {
                 dockerfile {
                     label "docker"
                     filename "Dockerfile"
+                    args "-v large_data"
                 }
             }
             steps {
@@ -70,6 +74,7 @@ pipeline {
                 dockerfile {
                     label "docker"
                     filename "Dockerfile"
+                    args "-v large_data"
                 }
             }
 
@@ -202,8 +207,22 @@ pipeline {
     }
 }
 
+def linkFolders(sourceDir = "/home/0xdiag", targetDir = "large_data") {
+    sh """
+        # NOTE: The source path is relative to the target path!
+        mkdir ${targetDir}
+        
+        mkdir ${targetDir}/h2oai-benchmarks
+        ln -s ${sourceDir}/Data ${targetDir}/h2oai-benchmarks
+        
+        mkdir ${targetDir}/h2o-3
+        ln -s ${sourceDir}/smalldata ${targetDir}/h2o-3
+        ln -s ${sourceDir}/bigdata ${targetDir}/h2o-3
+        ln -s ${sourceDir}/fread ${targetDir}/h2o-3
+    """
+}
+
 def returnIfModified(pattern, value) {
-    node {
         checkout scm
         out = sh script: """
                             if [ \$(\
@@ -214,6 +233,5 @@ def returnIfModified(pattern, value) {
                               -gt 0 ]; then
                             echo "${value}"; fi
                          """, returnStdout: true
-    }
     return out
 }
