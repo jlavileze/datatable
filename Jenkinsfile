@@ -245,10 +245,11 @@ class LargeTestsRoot {
     static sourceDir = "/home/0xdiag"
     static targetDir = "/tmp/pydatatable_large_data"
 
-    static linkMap = [ "Data" : "h2oai-benchmarks/Data",
-	               "smalldata" : "h2o-3/smalldata",
-	               "bigdata" : "h2o-3/bigdata",
-	               "fread" : "h2o-3/fread" ]
+    static linkMap = [ "fread" : "h2o-3/fread" ]
+    //"Data" : "h2oai-benchmarks/Data",
+	  //             "smalldata" : "h2o-3/smalldata",
+	    //           "bigdata" : "h2o-3/bigdata",
+	      //         "fread" : "h2o-3/fread" ]
 	       
     static makeDockerArgs() {
         def out = ""
