@@ -224,7 +224,7 @@ def returnIfModified(pattern, value) {
     return out
 }
 
-class LargeTestRoots {
+class LargeTestsRoot {
 
     // Directories should be absolute
     static sourceDir = "/home/0xdiag"
