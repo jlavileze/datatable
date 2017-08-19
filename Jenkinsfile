@@ -6,7 +6,7 @@ import ai.h2o.ci.Utils
 def utilsLib = new Utils()
 
 largeTestsRootEnv = returnIfModified(".*", LargeTestsRoot.targetDir)
-LargeTestsRoot.linkFolders(LargeTestsRoot.sourceDir, LargeTestsRoot.targetDir)
+linkFolders(LargeTestsRoot.sourceDir, LargeTestsRoot.targetDir)
 dockerArgs = LargeTestsRoot.makeDockerArgs()
 
 pipeline {
