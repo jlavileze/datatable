@@ -5,7 +5,7 @@
 import ai.h2o.ci.Utils
 def utilsLib = new Utils()
 node {
-largeTestsRootEnv = returnIfModified("(py_)?fread\\..*", "large_data")
+largeTestsRootEnv = returnIfModified(".*", "large_data")
 linkFolders()
 }
 
