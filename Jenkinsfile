@@ -53,7 +53,7 @@ pipeline {
                 dockerfile {
                     label "docker"
                     filename "Dockerfile"
-                    args "-v /tmp/pydatatable_large_data"
+                    args "-v /tmp/pydatatable_large_data:/tmp/pydatatable_large_data"
                 }
             }
             steps {
@@ -74,7 +74,7 @@ pipeline {
                 dockerfile {
                     label "docker"
                     filename "Dockerfile"
-                    args "-v /tmp/pydatatable_large_data"
+                    args "-v /tmp/pydatatable_large_data:/tmp/pydatatable_large_data"
                 }
             }
 
