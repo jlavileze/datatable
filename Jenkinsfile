@@ -53,7 +53,7 @@ pipeline {
                 dockerfile {
                     label "docker"
                     filename "Dockerfile"
-                    args "-v large_data"
+                    args "-v /home/0xdiag"
                 }
             }
             steps {
@@ -74,7 +74,7 @@ pipeline {
                 dockerfile {
                     label "docker"
                     filename "Dockerfile"
-                    args "-v large_data"
+                    args "-v /home/0xdiag"
                 }
             }
 
