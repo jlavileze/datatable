@@ -6,7 +6,7 @@ import ai.h2o.ci.Utils
 def utilsLib = new Utils()
 
 largeTestsRootEnv = returnIfModified(".*", LargeTestsRoot.targetDir)
-LargeTestsRoot.linkFolders()
+LargeTestsRoot.linkFolders(LargeTestsRoot.sourceDir, LargeTestsRoot.targetDir)
 dockerArgs = LargeTestsRoot.makeDockerArgs()
 
 pipeline {
@@ -224,6 +224,22 @@ def returnIfModified(pattern, value) {
     return out
 }
 
+def linkFolders(sourceDir, targetDir) {
+    node {
+        sh """
+            mkdir ${targetDir} || true
+        
+            mkdir ${targetDir}/h2oai-benchmarks || true
+            ln -sf ${sourceDir}/Data ${targetDir}/h2oai-benchmarks
+        
+            mkdir ${targetDir}/h2o-3 || true
+            ln -sf ${sourceDir}/smalldata ${targetDir}/h2o-3
+            ln -sf ${sourceDir}/bigdata ${targetDir}/h2o-3
+            ln -sf ${sourceDir}/fread ${targetDir}/h2o-3
+        """
+    }
+}
+
 class LargeTestsRoot {
 
     // Directories should be absolute
@@ -235,22 +251,6 @@ class LargeTestsRoot {
 	               "bigdata" : "h2o-3/bigdata",
 	               "fread" : "h2o-3/fread" ]
 	       
-    static linkFolders() {
-      node {
-      sh """
-          mkdir ${targetDir} || true
-        
-          mkdir ${targetDir}/h2oai-benchmarks || true
-          ln -sf ${sourceDir}/Data ${targetDir}/h2oai-benchmarks
-        
-          mkdir ${targetDir}/h2o-3 || true
-          ln -sf ${sourceDir}/smalldata ${targetDir}/h2o-3
-          ln -sf ${sourceDir}/bigdata ${targetDir}/h2o-3
-          ln -sf ${sourceDir}/fread ${targetDir}/h2o-3
-      """
-      }
-    }
-
     static makeDockerArgs() {
         def out = ""
         linkMap.each {
