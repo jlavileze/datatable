@@ -220,7 +220,8 @@ def linkFolders(sourceDir = "/home/0xdiag", targetDir = "/tmp/pydatatable_large_
         ln -s ${sourceDir}/bigdata ${targetDir}/h2o-3
         ln -s ${sourceDir}/fread ${targetDir}/h2o-3
     """
-    echo "\$(ls /tmp/pydatatable_large_data)"
+    tmp = sh script: "ls /tmp/pydatatable_large_data", returnStdout: true
+    echo tmp
 }
 
 def returnIfModified(pattern, value) {
