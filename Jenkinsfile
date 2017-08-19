@@ -236,6 +236,7 @@ class LargeTestsRoot {
 	               "fread" : "h2o-3/fread" ]
 	       
     static linkFolders() {
+      node {
       sh """
           mkdir ${targetDir} || true
         
@@ -247,6 +248,7 @@ class LargeTestsRoot {
           ln -sf ${sourceDir}/bigdata ${targetDir}/h2o-3
           ln -sf ${sourceDir}/fread ${targetDir}/h2o-3
       """
+      }
     }
 
     static makeDockerArgs() {
