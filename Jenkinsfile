@@ -235,7 +235,7 @@ class LargeTestsRoot {
 	               "bigdata" : "h2o-3/bigdata",
 	               "fread" : "h2o-3/fread" ]
 	       
-    static def linkFolders() {
+    static linkFolders() {
       sh """
           mkdir ${targetDir} || true
         
@@ -249,7 +249,7 @@ class LargeTestsRoot {
       """
     }
 
-    static def makeDockerArgs() {
+    static makeDockerArgs() {
         def out = ""
         linkMap.each {
             out += "-v ${key}:${value} "
