@@ -4,10 +4,10 @@
 
 import ai.h2o.ci.Utils
 def utilsLib = new Utils()
-node {
-largeTestsRootEnv = returnIfModified(".*", "/tmp/pydatatable_large_data")
-linkFolders()
-}
+
+largeTestsRootEnv = returnIfModified(".*", LargeTestsRoot.targetDir)
+LargeTestsRoot.linkFolders()
+dockerArgs = LargeTestsRoot.makeDockerArgs()
 
 pipeline {
     agent none
@@ -53,7 +53,7 @@ pipeline {
                 dockerfile {
                     label "docker"
                     filename "Dockerfile"
-                    args "-v /tmp/pydatatable_large_data -v /home/0xdiag"
+                    args dockerArgs
                 }
             }
             steps {
@@ -208,24 +208,8 @@ pipeline {
     }
 }
 
-def linkFolders(sourceDir = "/home/0xdiag", targetDir = "/tmp/pydatatable_large_data") {
-    sh """
-        # NOTE: The source path is relative to the target path!
-        mkdir ${targetDir} || true
-        
-        mkdir ${targetDir}/h2oai-benchmarks || true
-        ln -sf ${sourceDir}/Data ${targetDir}/h2oai-benchmarks
-        
-        mkdir ${targetDir}/h2o-3 || true
-        ln -sf ${sourceDir}/smalldata ${targetDir}/h2o-3
-        ln -sf ${sourceDir}/bigdata ${targetDir}/h2o-3
-        ln -sf ${sourceDir}/fread ${targetDir}/h2o-3
-    """
-    //tmp = sh script: "ls -RlL /tmp/pydatatable_large_data", returnStdout: true
-    //echo tmp
-}
-
 def returnIfModified(pattern, value) {
+    node {
         checkout scm
         out = sh script: """
                             if [ \$(\
@@ -236,5 +220,40 @@ def returnIfModified(pattern, value) {
                               -gt 0 ]; then
                             echo -n "${value}"; fi
                          """, returnStdout: true
+    }
     return out
+}
+
+class LargeTestRoots {
+
+    // Directories should be absolute
+    static sourceDir = "/home/0xdiag"
+    static targetDir = "/tmp/pydatatable_large_data"
+
+    static linkMap = [ "Data" : "h2oai-benchmarks/Data",
+	               "smalldata" : "h2o-3/smalldata",
+	               "bigdata" : "h2o-3/bigdata",
+	               "fread" : "h2o-3/fread" ]
+	       
+    static def linkFolders() {
+      sh """
+          mkdir ${targetDir} || true
+        
+          mkdir ${targetDir}/h2oai-benchmarks || true
+          ln -sf ${sourceDir}/Data ${targetDir}/h2oai-benchmarks
+        
+          mkdir ${targetDir}/h2o-3 || true
+          ln -sf ${sourceDir}/smalldata ${targetDir}/h2o-3
+          ln -sf ${sourceDir}/bigdata ${targetDir}/h2o-3
+          ln -sf ${sourceDir}/fread ${targetDir}/h2o-3
+      """
+    }
+
+    static def makeDockerArgs() {
+        args = ""
+        map.each {
+            args += "-v ${key}:${value} "
+        }
+        args
+    }
 }

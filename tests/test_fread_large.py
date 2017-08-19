@@ -16,9 +16,8 @@ root_env_name = "DT_LARGE_TESTS_ROOT"
 def get_file_list(*path):
     d = os.environ.get(root_env_name, "")
     if d == "":
-        return [pytest.param(
-                    None,
-                    marks=pytest.mark.skip("Environment variable '%s' is empty or not defined" % root_env_name))]
+        return [pytest.param(lambda: pytest.skip("Environment variable '%s' is empty or not defined" % root_env_name),
+                             id="")]
     if not os.path.isdir(d):
         return [pytest.param(
             lambda: pytest.fail("Directory '%s' (%s) does not exist" % (d, root_env_name), False),
