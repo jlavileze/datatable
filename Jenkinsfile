@@ -5,7 +5,7 @@
 import ai.h2o.ci.Utils
 def utilsLib = new Utils()
 node {
-largeTestsRootEnv = returnIfModified(".*", "large_data")
+largeTestsRootEnv = returnIfModified(".*", "/tmp/pydatatable_large_data")
 linkFolders()
 }
 
@@ -207,7 +207,7 @@ pipeline {
     }
 }
 
-def linkFolders(sourceDir = "/home/0xdiag", targetDir = "large_data") {
+def linkFolders(sourceDir = "/home/0xdiag", targetDir = "/tmp/pydatatable_large_data") {
     sh """
         # NOTE: The source path is relative to the target path!
         mkdir ${targetDir}
