@@ -210,15 +210,15 @@ pipeline {
 def linkFolders(sourceDir = "/home/0xdiag", targetDir = "/tmp/pydatatable_large_data") {
     sh """
         # NOTE: The source path is relative to the target path!
-        mkdir ${targetDir}
+        mkdir ${targetDir} || true
         
-        mkdir ${targetDir}/h2oai-benchmarks
-        ln -s ${sourceDir}/Data ${targetDir}/h2oai-benchmarks
+        mkdir ${targetDir}/h2oai-benchmarks || true
+        ln -sf ${sourceDir}/Data ${targetDir}/h2oai-benchmarks
         
-        mkdir ${targetDir}/h2o-3
-        ln -s ${sourceDir}/smalldata ${targetDir}/h2o-3
-        ln -s ${sourceDir}/bigdata ${targetDir}/h2o-3
-        ln -s ${sourceDir}/fread ${targetDir}/h2o-3
+        mkdir ${targetDir}/h2o-3 || true
+        ln -sf ${sourceDir}/smalldata ${targetDir}/h2o-3
+        ln -sf ${sourceDir}/bigdata ${targetDir}/h2o-3
+        ln -sf ${sourceDir}/fread ${targetDir}/h2o-3
     """
     tmp = sh script: "ls -RlL /tmp/pydatatable_large_data", returnStdout: true
     echo tmp
