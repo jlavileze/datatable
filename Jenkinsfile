@@ -5,9 +5,21 @@
 import ai.h2o.ci.Utils
 def utilsLib = new Utils()
 
-largeTestsRootEnv = returnIfModified(".*", LargeTestsRoot.targetDir)
-linkFolders(LargeTestsRoot.sourceDir, LargeTestsRoot.targetDir)
-dockerArgs = LargeTestsRoot.makeDockerArgs()
+// Paths should be absolute
+def sourceDir = "/home/0xdiag"
+def targetDir = "/tmp/pydatatable_large_data"
+
+def linkMap = [ "Data" : "h2oai-benchmarks/Data",
+		"smalldata" : "h2o-3/smalldata",
+		"bigdata" : "h2o-3/bigdata",
+		"fread" : "h2o-3/fread" ]
+		   
+def largeTestsRootEnv = returnIfModified(".*", targetDir)
+def dockerArgs = ""
+if (!largeTestsRootEnv.isEmpty()) {
+    linkFolders(sourceDir, targetDir)
+    dockerArgs = makeDockerArgs(linkMap, sourceDir, targetDir)
+}
 
 pipeline {
     agent none
@@ -239,23 +251,11 @@ def linkFolders(sourceDir, targetDir) {
     }
 }
 
-class LargeTestsRoot {
-
-    // Directories should be absolute
-    static sourceDir = "/home/0xdiag"
-    static targetDir = "/tmp/pydatatable_large_data"
-
-    static linkMap = [ "fread" : "h2o-3/fread" ]
-    //"Data" : "h2oai-benchmarks/Data",
-	  //             "smalldata" : "h2o-3/smalldata",
-	    //           "bigdata" : "h2o-3/bigdata",
-	      //         "fread" : "h2o-3/fread" ]
 	       
-    static makeDockerArgs() {
-        def out = ""
-        linkMap.each { key, value ->
-            out += "-v ${sourceDir}/${key}:${targetDir}/${value} "
-        }
-        out
-    }
+static makeDockerArgs(linkMap, sourceDir, targetDir) {
+  def out = ""
+  linkMap.each { key, value ->
+    out += "-v ${sourceDir}/${key}:${targetDir}/${value} "
+  }
+  return out
 }
