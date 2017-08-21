@@ -14,7 +14,7 @@ def linkMap = [ "Data" : "h2oai-benchmarks/Data",
 		"bigdata" : "h2o-3/bigdata",
 		"fread" : "h2o-3/fread" ]
 		   
-def largeTestsRootEnv = returnIfModified(".*", targetDir)
+def largeTestsRootEnv = returnIfModified("(py_)?fread\\..*", targetDir)
 def dockerArgs = ""
 if (!largeTestsRootEnv.isEmpty()) {
     linkFolders(sourceDir, targetDir)
