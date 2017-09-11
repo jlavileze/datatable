@@ -221,8 +221,9 @@ pipeline {
 
 def returnIfModified(pattern, value) {
     node {
-	git scm.getUserRemoteConfigs()[0].getUrl()
 	checkout scm
+	git_url = sh script: "git remote get-url origin", returnStdout: true
+	git git_url
         out = sh script: """
                             if [ \$(\
                                 git diff-tree --no-commit-id --name-only -r HEAD \$(git merge-base HEAD origin/master) | \
