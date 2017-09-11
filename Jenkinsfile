@@ -3,6 +3,7 @@
 @Library('test-shared-library') _
 
 import ai.h2o.ci.Utils
+import ai.h2o.ci.BuildInfo
 def utilsLib = new Utils()
 
 // Paths should be absolute
@@ -223,7 +224,7 @@ def returnIfModified(pattern, value) {
     node {
 	checkout scm
 	git_url = sh script: "git remote get-url origin", returnStdout: true
-	git git_url
+	git url: git_url, credentialsId: env.ASK_PASS
         out = sh script: """
                             if [ \$(\
                                 git diff-tree --no-commit-id --name-only -r HEAD \$(git merge-base HEAD origin/master) | \
