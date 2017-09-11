@@ -225,7 +225,7 @@ def returnIfModified(pattern, value) {
 	checkout scm
 	buildInfo(env.BRANCH_NAME, false)
 	for (f in buildInfo.get().getChangedFiles()) {
-	    echo f
+	    echo Paths.get(f).getName()
 	}
         out = ""/*sh script: """
 	                  if [ \$(					\
