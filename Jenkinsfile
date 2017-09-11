@@ -4,6 +4,7 @@
 
 import ai.h2o.ci.Utils
 import ai.h2o.ci.BuildInfo
+import java.nio.file.Paths
 def utilsLib = new Utils()
 
 // Paths should be absolute
