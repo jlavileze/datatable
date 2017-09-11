@@ -223,17 +223,19 @@ pipeline {
 def returnIfModified(pattern, value) {
     node {
 	checkout scm
-	git_url = sh script: "git remote get-url origin", returnStdout: true
-	git url: git_url, credentialsId: env.ASK_PASS
-        out = sh script: """
-                            if [ \$(\
+	buildInfo(env.BRANCH_NAME, false)
+	for (file in buildInfo.get().getChangedFiles()) {
+	    echo file
+	}	
+        out = ""/*sh script: """
+	                  if [ \$(					\
                                 git diff-tree --no-commit-id --name-only -r HEAD \$(git merge-base HEAD origin/master) | \
                                 xargs basename | \
                                 egrep -e '${pattern}' | \
                                 wc -l) \
                               -gt 0 ]; then
                             echo -n "${value}"; fi
-                         """, returnStdout: true
+			    """, returnStdout: true*/
     }
     return out
 }
