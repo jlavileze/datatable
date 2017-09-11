@@ -221,6 +221,7 @@ pipeline {
 
 def returnIfModified(pattern, value) {
     node {
+	git "${env.GIT_URL}"
         checkout scm
         out = sh script: """
                             if [ \$(\
