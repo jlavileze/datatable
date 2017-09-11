@@ -1,10 +1,9 @@
 #!/usr/bin/groovy
-// TOOD: rename to @Library('h2o-jenkins-pipeline-lib') _
+// TODO: rename to @Library('h2o-jenkins-pipeline-lib') _
 @Library('test-shared-library') _
 
 import ai.h2o.ci.Utils
 import ai.h2o.ci.BuildInfo
-import java.nio.file.Paths
 def utilsLib = new Utils()
 
 // Paths should be absolute
@@ -225,9 +224,7 @@ def returnIfModified(pattern, value) {
     node {
 	checkout scm
 	buildInfo(env.BRANCH_NAME, false)
-	for (f in buildInfo.get().getChangedFiles()) {
-	    echo Paths.get(f).getName()
-	}
+	echo String.join("\n", f in buildInfo.get().getChangedFiles())
         out = ""/*sh script: """
 	                  if [ \$(					\
                                 git diff-tree --no-commit-id --name-only -r HEAD \$(git merge-base HEAD origin/master) | \
