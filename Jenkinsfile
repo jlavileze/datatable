@@ -224,9 +224,7 @@ def returnIfModified(pattern, value) {
     node {
 	checkout scm
 	buildInfo(env.BRANCH_NAME, false)
-	for (file in buildInfo.get().getChangedFiles()) {
-	    echo file
-	}	
+	echo buildInfo.get().ChangedFiles()
         out = ""/*sh script: """
 	                  if [ \$(					\
                                 git diff-tree --no-commit-id --name-only -r HEAD \$(git merge-base HEAD origin/master) | \
