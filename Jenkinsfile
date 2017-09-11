@@ -224,7 +224,7 @@ def returnIfModified(pattern, value) {
         checkout scm
 	
         out = sh script: """
-echo \$(git branch)
+echo $(git branch)
                          """, returnStdout: true
     }
     return out
