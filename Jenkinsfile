@@ -221,8 +221,8 @@ pipeline {
 
 def returnIfModified(pattern, value) {
     node {
+	checkout scm
 	git "${env.GIT_URL}"
-        checkout scm
         out = sh script: """
                             if [ \$(\
                                 git diff-tree --no-commit-id --name-only -r HEAD \$(git merge-base HEAD origin/master) | \
