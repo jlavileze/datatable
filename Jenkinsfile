@@ -229,8 +229,8 @@ def returnIfModified(pattern, value) {
 	    fList += f + "\n"
 	}
         out = sh script: """
-	                  if [ \$(					\
-                                echo ${fList} | \
+	                  if [ \$(   \
+                                echo "${fList}" | \
                                 xargs basename | \
                                 egrep -e '${pattern}' | \
                                 wc -l) \
