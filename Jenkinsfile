@@ -224,16 +224,16 @@ def returnIfModified(pattern, value) {
     node {
 	checkout scm
 	buildInfo(env.BRANCH_NAME, false)
-	echo String.join("\n", buildInfo.get().getChangedFiles())
-        out = ""/*sh script: """
+	tmp =  String.join("\n", buildInfo.get().getChangedFiles())
+        out = sh script: """
 	                  if [ \$(					\
-                                git diff-tree --no-commit-id --name-only -r HEAD \$(git merge-base HEAD origin/master) | \
+                                echo ${tmp} | \
                                 xargs basename | \
                                 egrep -e '${pattern}' | \
                                 wc -l) \
                               -gt 0 ]; then
                             echo -n "${value}"; fi
-			    """, returnStdout: true*/
+			    """, returnStdout: true
     }
     return out
 }
