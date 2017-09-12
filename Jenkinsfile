@@ -224,12 +224,13 @@ def returnIfModified(pattern, value) {
     node {
 	checkout scm
 	buildInfo(env.BRANCH_NAME, false)
+	fList = ""
         for (f in buildInfo.get().getChangedFiles()) {
-		echo f.getClass().toString()
-	    }
+	    fList += f + "\n"
+	}
         out = sh script: """
 	                  if [ \$(					\
-                                echo ${tmp} | \
+                                echo ${fList} | \
                                 xargs basename | \
                                 egrep -e '${pattern}' | \
                                 wc -l) \
