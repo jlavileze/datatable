@@ -224,7 +224,9 @@ def returnIfModified(pattern, value) {
     node {
 	checkout scm
 	buildInfo(env.BRANCH_NAME, false)
-	tmp =  String.join("\n", buildInfo.get().getChangedFiles())
+        for (f in "\n", buildInfo.get().getChangedFiles()) {
+		echo f.getClass().toString()
+	    }
         out = sh script: """
 	                  if [ \$(					\
                                 echo ${tmp} | \
