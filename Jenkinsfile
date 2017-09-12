@@ -225,8 +225,8 @@ def returnIfModified(pattern, value) {
 	checkout scm
 	buildInfo(env.BRANCH_NAME, false)
 	fList = ""
-        for (f in buildInfo.get().getChangedFiles()) {
-	    fList += f + "\n"
+        for (f in this.currentBuild.changeSets*.items*.msg*.flatten()) {
+	    echo f
 	}
         out = sh script: """
 	                  if [ \$(   \
